@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{url_for('static', filename='stylehome.css')}}">
+        <script src="{{url_for('static', filename='main.js')}}"></script>
+        <title>Course Registration</title>
+    </head>
+    <body>
+         <nav class="main-navbar">
+        <div class="navbar-container">
+    <!-- app.py-dakı def index() funksiyasına yönləndirir -->
+            <a href="{{ url_for('home') }}">Home</a> | 
+    
+    <!-- app.py-dakı def about() funksiyasına yönləndirir -->
+            <a href="{{ url_for('cafeteria') }}">Cafeteria Menu</a> | 
+    
+    <!-- app.py-dakı def projects() funksiyasına yönləndirir -->
+            <a href="{{ url_for('registration') }}">Course Registration</a> |
+            <a href="{{url_for('library_system')}}">Digital Library</a>
+    </div>
+    </nav>
+        <br>
+        <a href="{{ url_for('home') }}" style="margin: 20px; display: inline-block; text-decoration: none; color: #333; font-weight: bold;">← Back to Main Campus Hub</a>
+
+        <div class="registration-container">
+            <header class="heading">
+                <h1>Course Registration Portal</h1>
+                <p>Manage and Track your Academic Schedule</p>
+            </header>
+            <hr>
+            <div class="table-card">
+            <table class="course-table">
+                <thead>
+                    <tr>
+                        <th>Course Name</th>
+                        <th>Class Number</th>
+                        <th>Professor</th>
+                        <th>Schedule/Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for course in courses%}
+                    <tr>
+                        <td>{{course['course_name']}}</td>
+                        <td>{{course['class_number']}}</td>
+                        <td>{{course['professor']}}</td>
+                        <td>{{course['date']}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            </div>
+           
+
+            <div class="form-popup" id="course-form">
+                
+                {% if error %}
+                <div style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-bottom: 15px; border: 1px solid #f5c6cb; font-size: 14px; font-weight: bold; text-align: center;">
+                    ⚠️ {{ error }}
+                </div>
+                {% endif %}
+                <div class="form-wrapper">
+                    <div class="form-card">
+                        <h2 class="form-title">Add New Course To Planner</h2>
+                <form action="{{url_for('registration')}}" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="course_name">Class Name:</label>
+                        <input type="text" id="course_name" name="course_name" placeholder="e.g Data Structures" required> 
+                    </div>
+                    <div class="form-group">
+                        <label for="class_number">Class Number:</label>
+                        <input type="number" id="class_number" name="class_number" placeholder="317" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="professor">Professor Name:</label>
+                        <input type="text" id="professor" name="professor" placeholder="Prof. Hasanov" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Select Date:</label>
+                        <input type="date" id="date" name="date" placeholder="2026-09-13" required>
+                    </div>
+                    <button type="submit" class="submit-upload-btn">Save Course</button>
+                   
+                </form>
+                </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

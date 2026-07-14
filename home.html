@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{url_for('static', filename='stylehome.css')}}">
+        <script src="{{url_for('static', filename='main.js')}}"></script>
+        <title>Smart Campus</title>
+    </head>
+    <body>
+         <nav class="main-navbar">
+        <div class="navbar-container">
+    <!-- app.py-dakı def index() funksiyasına yönləndirir -->
+            <a href="{{ url_for('home') }}">Home</a> | 
+    
+    <!-- app.py-dakı def about() funksiyasına yönləndirir -->
+            <a href="{{ url_for('cafeteria') }}">Cafeteria Menu</a> | 
+    
+    <!-- app.py-dakı def projects() funksiyasına yönləndirir -->
+            <a href="{{ url_for('registration') }}">Course Registration</a> |
+            <a href="{{url_for('library_system')}}">Digital Library</a>
+    </div>
+    </nav>
+        <br>
+        <br>
+        <br>
+        <header class="heading">
+            <br>
+            <h1>Welcome to Smart Campus</h1>
+            <p>Be aware of the latest changes digitally</p>
+        </header>
+        <hr>
+        <div class="campus-wrapper">
+            <img src="{{url_for('static', filename='photos/students.jpg')}}" class="campus-photo" alt="That is the university campus">
+        </div>
+        <hr style="width: 80%;">
+        <section>
+            <div class="cafeteria">
+                <h2 style="text-align: center;">Cafeteria menu</h2>
+                <div class="cafeteria-preview-grid">
+        <!-- Jinja dövrü ilə bazadan yalnız ilk 3 məhsulu çıxarırıq -->
+        {% for item in teacher_menu[:3] %}
+        <div class="menu-preview-card">
+            <!-- Bazadakı şəkil sütununun adını bura yazın (məsələn: image_filename) -->
+            <div class="menu-preview-image-box">
+                <img src="{{ url_for('static', filename='photos/' + item.image_filename) }}" alt="{{ item.name }}" class="menu-preview-img">
+            </div>
+            <h4>{{ item.name }}</h4>
+            <!-- Əgər bazada qısa təsvir varsa item.description yaza bilərsiniz -->
+            
+        </div>
+        {% endfor %}
+    </div>
+                
+                <div style="text-align: center; margin: 40px 0;">
+            <a href="{{ url_for('cafeteria') }}" style="display: inline-block; padding: 12px 35px; background-color: #6A2C70; color: #fff; text-decoration: none; border-radius: 25px; font-weight: bold;">
+                Go to Full Cafeteria Page to See Prices →
+            </a>
+        </div>
+            </div>
+        </section>
+        <section class="course registration" style="text-align: center; margin: 50px 0;">
+    <hr style="width: 80%; margin: 40px auto;">
+    <div style="text-align: center;">
+        <h2>Course Schedule</h2>
+    </div>
+    <table class="course-table">
+        <thead>
+            <tr>
+                <th>Course Name</th>
+                <th>Class Number</th>
+                <th>Professor</th>
+                <th>Schedule/Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for course in courses %}
+            <tr>
+                <td>{{course['course_name']}}</td>
+                <td>{{course['class_number']}}</td>
+                <td>{{course['professor']}}</td>
+                <td>{{course['date']}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="{{ url_for('registration') }}" style="display: inline-block; padding: 12px 35px; background-color: #6A2C70; color: white; text-decoration: none; border-radius: 25px; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            Manage & Add Courses →
+        </a>
+    </div>
+    
+</section>
+    <button id="backToTop" class="back-to-top" title="Go To Top">↑</button>
+    </body>
+</html>

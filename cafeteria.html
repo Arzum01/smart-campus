@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='stylehome.css')}}">
+    <script src="{{url_for('static', filename='main.js')}}"></script>
+    <title>Cafeteria Menu</title>
+</head>
+<body>
+     <nav class="main-navbar">
+        <div class="navbar-container">
+    <!-- app.py-dakı def index() funksiyasına yönləndirir -->
+            <a href="{{ url_for('home') }}">Home</a> | 
+    
+    <!-- app.py-dakı def about() funksiyasına yönləndirir -->
+            <a href="{{ url_for('cafeteria') }}">Cafeteria Menu</a> | 
+    
+    <!-- app.py-dakı def projects() funksiyasına yönləndirir -->
+            <a href="{{ url_for('registration') }}">Course Registration</a> |
+            <a href="{{url_for('library_system')}}">Digital Library</a>
+    </div>
+    </nav>
+     <a href="{{ url_for('home') }}" style="margin: 20px; display: inline-block; text-decoration: none; color: #333; font-weight: bold;">← Back to Main Campus Hub</a>
+    <section style="margin-top: 20px;">
+        <div class="cafeteria">
+            <header class="heading" style="text-align: center;">
+                <h1>Exclusive Cafeteria Menu</h1>
+            </header>
+            <hr>
+            <h3>For Students</h3>
+            <section class="flip-container">
+            <section class="menu-grid">
+                {% for item in student_menu %}
+                <figure class="menu-item">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <img src="{{url_for('static', filename='photos/' + item['image_filename'])}}" alt="{{item['name']}}">
+                            <figcaption>{{item['name']}}</figcaption>
+                        </div>
+                        <div class="card-back">
+                            <h3>{{item['name']}}</h3>
+                            <p style="font-size: 1.5rem; color: #ffcc00; font-weight: bold;">{{item['price']}}</p>
+                        </div>
+                    </div>
+                </figure>
+                {% endfor %}
+            </section>
+            </section>
+            <h3>For Teachers</h3>
+            <section class="flip-container">
+            <section class="menu-grid">
+                {% for item in teacher_menu %}
+                <figure class="menu-item">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <img src="{{url_for('static', filename='photos/' + item['image_filename'])}}" alt="{{item['name']}}">
+                            <figcaption>{{item['name']}}</figcaption>
+                        </div>
+                        <div class="card-back">
+                            <h3>{{item['name']}}</h3>
+                            <p style="font-size: 1.5rem; color: #ffcc00; font-weight: bold;">{{item['price']}}</p>
+                        </div>
+                    </div>
+                </figure>
+                {% endfor %}
+            </section>
+            </section>
+        </div>
+
+    </section>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

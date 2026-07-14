@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='stylehome.css')}}">
+    <script src="{{url_for('static', filename='main.js')}}"></script>
+    <title>Digital Library</title>
+</head>
+<body>
+     <nav class="main-navbar">
+        <div class="navbar-container">
+    <!-- app.py-dakı def index() funksiyasına yönləndirir -->
+            <a href="{{ url_for('home') }}">Home</a> | 
+    
+    <!-- app.py-dakı def about() funksiyasına yönləndirir -->
+            <a href="{{ url_for('cafeteria') }}">Cafeteria Menu</a> | 
+    
+    <!-- app.py-dakı def projects() funksiyasına yönləndirir -->
+            <a href="{{ url_for('registration') }}">Course Registration</a> |
+            <a href="{{url_for('library_system')}}">Digital Library</a>
+    </div>
+    </nav>
+    <a href="{{ url_for('home') }}" style="margin: 20px; display: inline-block; text-decoration: none; color: #333; font-weight: bold;">← Back to Main Campus Hub</a>
+    <h1 style="text-align: center; margin-top: 40px; color: #333;">Campus Digital Library</h1>
+    <p style="text-align: center; color: #666; margin-bottom: 20px;">Click on any book cover to securely open its PDF document.</p>
+
+    <div style="max-width: 500px; margin: 0 auto 20px auto; display: flex; justify-content: center;">
+        <form action="{{ url_for('library_system') }}" method="GET" style="display: flex; width: 100%; gap: 10px;">
+            <input type="text" name="search" value="{{ search_query }}" placeholder="Search book by title..." 
+                   style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 15px;">
+            <button type="submit" style="padding: 10px 20px; background-color: #6A2C70; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">Search</button>
+            {% if search_query %}
+                <a href="{{ url_for('library_system') }}" style="padding: 10px 15px; background-color: #f0f0f0; color: #333; text-decoration: none; border-radius: 5px; border: 1px solid #ccc; font-size: 14px; display: flex; align-items: center;">Clear</a>
+            {% endif %}
+        </form>
+    </div>
+
+    <div class="library-grid">
+        {% for book in books %}
+        <div class="book-item" data-url="{{ url_for('view_pdf', filename=book['pdf_filename']) }}" 
+             onclick="window.open(this.dataset.url, '_blank')">
+            <figure style="margin:0;">
+                <img src="{{ url_for('static', filename='covers/' + book['image_filename'])}}" alt="{{book['title']}}">
+                <figcaption>{{book['title']}}</figcaption>
+            </figure>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="pagination-controls">
+        <a href="{{ url_for('library_system', page=page-1, search = search_query)}}" class="pagination-btn {% if page <= 1 %}disabled{% endif %}">« Previous</a>
+        <span style="font-weight: bold; margin: 0 10px;">Page {{page}} of {{total_pages}}</span>
+        <a href="{{ url_for('library_system', page=page+1, search = search_query)}}" class="pagination-btn {% if page >= total_pages %}disabled{% endif %}">Next »</a>
+
+    </div>
+    <hr style="max-width: 1200px; border: 0; border-top: 1px solid #eee; margin: 50px auto;">
+
+    <div class="upload-container">
+        <h3>Add New Book To Library</h3>
+        <form action="{{url_for('library_system')}}" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="title">Book Name:</label>
+                <input type="text" id="title" name="title" placeholder="e.g Introduction to Programming" required>
+            </div>
+            <div class="form-group">
+                <label for="cover_image">Book Cover:</label>
+                <input type="file" id="cover_image" name="cover_image" accept="image/*" required>
+            </div>
+            <div class="form-group">
+                <label for="pdf_file">Book PDF-file:</label>
+                <input type="file" id="pdf_file" name="pdf_file" accept=".pdf" required>
+            </div>
+            <button type="submit" class="submit-upload-btn">Upload & Publish Book</button>
+            <button id="backToTop" class="back-to-top" title="Go To Top">↑</button>
+        </form>
+    </div>
+</body>
+</html>
